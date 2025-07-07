@@ -951,15 +951,15 @@ void sendToMongoDB(String payload)
   {
     WiFiClient wifiClient;
     HTTPClient http;
-    http.begin(wifiClient, "http://192.168.1.164:3000/api/airgradient");
+    http.begin(wifiClient, "https://ministation-1883.vercel.app/api/airgradient");
     http.addHeader("Content-Type", "application/json");
     int httpResponseCode = http.POST(payload);
-    Serial.print("HTTP Response code: ");
+    Serial.print("MongoDB HTTP Response code: ");
     Serial.println(httpResponseCode);
     http.end();
   }
   else
   {
-    Serial.println("WiFi not connected");
+    Serial.println("WiFi not connected for MongoDB");
   }
 }
