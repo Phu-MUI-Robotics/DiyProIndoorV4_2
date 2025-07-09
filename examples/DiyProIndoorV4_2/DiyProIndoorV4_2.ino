@@ -89,7 +89,6 @@ static void setMeasurementMaxPeriod();
 static void initDirectMqtt(void);
 static void directMqttHandle(void);
 static bool connectDirectMqtt(void);
-static void sendDataToMongoDB(void); // เพิ่ม
 
 AgSchedule dispLedSchedule(DISP_UPDATE_INTERVAL, oledDisplaySchedule);
 AgSchedule configSchedule(SERVER_CONFIG_SYNC_INTERVAL, configurationUpdateSchedule);
@@ -937,29 +936,6 @@ static void directMqttHandle(void) // Part การส่งข้อมูล�
     directMqttClient.loop();
   }
 
-  // เพิ่ม
-  sendToMongoDB(payload);
-
   uint32_t finalFreeHeap = ESP.getFreeHeap();
   Serial.println("Final free heap: " + String(finalFreeHeap) + " bytes");
-}
-
-// เพิ่ม
-void sendToMongoDB(String payload)
-{
-  if (WiFi.status() == WL_CONNECTED)
-  {
-    WiFiClient wifiClient;
-    HTTPClient http;
-    http.begin(wifiClient, "https://ministation-1883.vercel.app/api/airgradient");
-    http.addHeader("Content-Type", "application/json");
-    int httpResponseCode = http.POST(payload);
-    Serial.print("MongoDB HTTP Response code: ");
-    Serial.println(httpResponseCode);
-    http.end();
-  }
-  else
-  {
-    Serial.println("WiFi not connected for MongoDB");
-  }
 }
